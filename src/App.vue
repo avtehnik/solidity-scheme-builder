@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <FileLoader @files-uploaded="handleFiles"></FileLoader>
-        <diagram ref="diag" v-bind:model-data="diagramData" v-on:model-changed="modelChanged" v-on:changed-selection="changedSelection"
+        <diagram ref="diag" v-bind:modelData="diagramData" v-on:model-changed="modelChanged" v-on:changed-selection="changedSelection"
                  style="border: solid 1px black; width:100%; height:100%"></diagram>
     </div>
 </template>
@@ -10,7 +10,6 @@
     import FileLoader from './components/FileLoader.vue'
     import Diagram from './components/Diagram.vue'
     import ContractTrnsformer from './helpers/ContractTrnsformer'
-    var SolidityParser = require("solidity-parser-antlr");
 
     export default {
         name: 'app',
@@ -29,13 +28,15 @@
                 files.forEach(function (file) {
                     parsers.push(new Promise(function (resolve, reject) {
                         try {
-                            var parsedContract = SolidityParser.parse(file.content);
+                            var parsedContract = window.solidityParser(file.content);
                             if (parsedContract.type == "SourceUnit") {
                                 contracts.push(ContractTrnsformer.printContract(file.file.name, parsedContract.children));
                             }
                             resolve();
                         } catch (e) {
-                            reject();
+                            console.log(e);
+//s                            reject(e);
+                            resolve();
                         }
 
                     }));
@@ -43,8 +44,10 @@
                 setTimeout(function() {
                     Promise.all(parsers).then(function(){
                         this.diagramData = contracts;
-                    }.bind(this));
-                }.bind(this),1);
+                    }.bind(this),function(e){
+                        console.log(e);
+                    });
+                }.bind(this),100);
             },
             modelChanged: function (e) {
                 if (e.isTransactionFinished) {  // show the model data in the page's TextArea

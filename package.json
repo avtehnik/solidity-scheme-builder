@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "gojs": "^1.8.31",
+    "solidity-parser": "^0.4.0",
     "solidity-parser-antlr": "^0.3.2",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vueify": "^9.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.4",

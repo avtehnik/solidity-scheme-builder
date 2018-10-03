@@ -13,7 +13,6 @@
             return {diagram: null}
         },  // provide access to the GoJS Diagram
         mounted: function () {
-            var self = this;
             var $ = go.GraphObject.make;
             var myDiagram =
                     $(go.Diagram, this.$el,
@@ -144,29 +143,6 @@
             //  scale: 2
             //});
 
-            function convertIsTreeLink(r) {
-                return r === "generalization";
-            }
-
-            function convertFromArrow(r) {
-                switch (r) {
-                    case "generalization":
-                        return "";
-                    default:
-                        return "";
-                }
-            }
-
-            function convertToArrow(r) {
-                switch (r) {
-                    case "generalization":
-                        return "Triangle";
-                    case "aggregation":
-                        return "StretchedDiamond";
-                    default:
-                        return "";
-                }
-            }
 
             myDiagram.linkTemplate =
                     $(go.Link,
@@ -178,7 +154,9 @@
                                 relinkableFrom: true,
                                 relinkableTo: true
                             },
-                            new go.Binding("isLayoutPositioned", "relationship", convertIsTreeLink),
+                            new go.Binding("isLayoutPositioned", "relationship",  function(r) {
+                                return r === "generalization";
+                            }),
                             //$(go.Shape),
                             //$(go.Shape, {scale: 1.3, fill: "white"},
                             //  new go.Binding("fromArrow", "relationship", convertFromArrow)),
@@ -213,7 +191,6 @@
             };
 
             this.diagram = myDiagram;
-
 
 //            this.updateModel(this.modelData);
         },

@@ -25,7 +25,7 @@
 <template>
     <div v-show="showEl" id="file-drag-drop">
         <form ref="fileform">
-            <div class="drop-files">Drop solidiy source the files here!</div>
+            <div class="drop-files">Drop solidiy source files here!</div>
         </form>
     </div>
 </template>
